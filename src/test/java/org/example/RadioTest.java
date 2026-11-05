@@ -7,39 +7,68 @@ public class RadioTest {
 
 
     @Test
-    public void shouldSetValidStation() {
+    public void shouldInitWithDefaultStationsCount() {
         Radio radio = new Radio();
-        radio.setCurrentStation(5);
-        assertEquals(5, radio.getCurrentStation());
+        assertEquals(10, radio.getNumberOfStations());
     }
 
     @Test
-    public void shouldNotSetStationAboveMax() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(10);
+    public void shouldInitWithCustomStationsCount() {
+        Radio radio = new Radio(30);
+        assertEquals(30, radio.getNumberOfStations());
+    }
+
+    @Test
+    public void shouldNotInitWithNegativeStationsCount() {
+        Radio radio = new Radio(-5);
+        assertEquals(10, radio.getNumberOfStations());
+    }
+
+
+    @Test
+    public void shouldSetValidStationCustom() {
+        Radio radio = new Radio(30);
+        radio.setCurrentStation(29);
+        assertEquals(29, radio.getCurrentStation());
+    }
+
+    @Test
+    public void shouldNotSetStationAboveMaxCustom() {
+        Radio radio = new Radio(30);
+        radio.setCurrentStation(30);
         assertEquals(0, radio.getCurrentStation());
     }
+
+    @Test
+    public void shouldSwitchToNextStationCustom() {
+        Radio radio = new Radio(30);
+        radio.setCurrentStation(28);
+        radio.next();
+        assertEquals(29, radio.getCurrentStation());
+    }
+
+    @Test
+    public void shouldSwitchToZeroIfStationIsMaxCustom() {
+        Radio radio = new Radio(30);
+        radio.setCurrentStation(29);
+        radio.next();
+        assertEquals(0, radio.getCurrentStation());
+    }
+
+    @Test
+    public void shouldSwitchToMaxIfStationIsZeroCustom() {
+        Radio radio = new Radio(30);
+        radio.setCurrentStation(0);
+        radio.prev();
+        assertEquals(29, radio.getCurrentStation());
+    }
+
+    // Прошлые тесты
 
     @Test
     public void shouldNotSetStationBelowMin() {
         Radio radio = new Radio();
         radio.setCurrentStation(-1);
-        assertEquals(0, radio.getCurrentStation());
-    }
-
-    @Test
-    public void shouldSwitchToNextStation() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(5);
-        radio.next();
-        assertEquals(6, radio.getCurrentStation());
-    }
-
-    @Test
-    public void shouldSwitchToZeroIfStationIsNine() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(9);
-        radio.next();
         assertEquals(0, radio.getCurrentStation());
     }
 
@@ -50,15 +79,6 @@ public class RadioTest {
         radio.prev();
         assertEquals(4, radio.getCurrentStation());
     }
-
-    @Test
-    public void shouldSwitchToNineIfStationIsZero() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(0);
-        radio.prev();
-        assertEquals(9, radio.getCurrentStation());
-    }
-
 
     @Test
     public void shouldIncreaseVolume() {
